@@ -37,7 +37,7 @@ func main() {
 	// AuctionState proxies messages to AuctionState's corresponding methods.
 	provider := NewProvider(3)
 	message.AuctionFactory(func() message.Auction {
-		return auctionactor.NewAuctionGrain(provider)
+		return &auctionactor.AuctionGrain{}
 	})
 
 	remoteConfig := remote.Configure("127.0.0.1", 8080)
@@ -57,7 +57,7 @@ func main() {
 				// When the next
 				Timeout: 10 * time.Second,
 			}
-		}),
+		}).WithReceiverMiddleware(persistence.Using(provider)),
 	)
 
 	clusterConfig := cluster.Configure("cluster-example", cp, remoteConfig, auctionKind)
