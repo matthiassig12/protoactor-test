@@ -1,0 +1,38 @@
+syntax = "proto3";
+package message;
+
+import "model/proto/protos.proto";
+
+message Bid {
+    int32 lot_number = 1;
+    string user = 2;
+    int64 amount = 3;
+}
+
+message CreateAuctionRequest {
+    int32 number_of_lots = 1;
+}
+
+message CreateAuctionResponse {
+    model.Auction auction = 1;
+}
+
+message GetAuctionRequest {}
+
+message GetAuctionResponse {
+    model.Auction auction = 1;
+}
+
+message BidOnLotRequest {
+    Bid bid = 2;
+}
+
+message BidOnLotResponse {
+    bool bid_with_you = 1;
+}
+
+service Auction {
+    rpc CreateAuction(CreateAuctionRequest) returns (CreateAuctionResponse) {}
+    rpc GetAuction(GetAuctionRequest) returns (GetAuctionResponse) {}
+    rpc BidOnLot(BidOnLotRequest) returns (BidOnLotResponse) {}
+}
